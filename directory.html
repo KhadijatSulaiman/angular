@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+
+<body  ng-app="myApp" ng-controller="myCtrl">
+    <h1>Student Directory</h1>
+    <form novalidate>
+        <p>{{ message}} </p><br>
+
+        Full NAME:<br>
+        <input type="text" ng-model="user.name" required><br>
+        Email<br>
+        <input type="text" ng-model="user.email" required><br>
+        Phone:<br>
+        <input type="text" ng-model="user.phone"><br>
+        Stream:<br>
+        <input type="text" ng-model="user.stream" required><br>
+        Gender:<br>
+        <input type="text" ng-model="user.gender" required><br>
+        About:<br>
+        <input type="textarea" ng-model="user.about" required><br>
+        You Experience:<br>
+        <input type="textarea" ng-model="user.experience" required><br>
+        <br><br>
+        <input type="hidden" ng-model="user.user_id">
+        <button ng-click="save()">Submit</button>
+        <button ng-click="update()">Update</button>
+        <button ng-click="reset()">Reset</button>
+    </form><hr>
+
+    <table style="width: 100%">
+        <button ng-click="getStudents()">Refresh</button>
+        <tr>
+            <th>Full Name</th>
+            <th>Stream</th>
+            <th>Gender</th>
+            <th>About</th>
+            <th>Experience</th>
+            <th>Action</th>
+            <tr ng-repeat="data in res.data">
+                <td>{{ data.name}}</td>
+                <td>{{ data.stream}}</td>
+                <td>{{ data.gender}}</td>
+                <td>{{ data.about}}</td>
+                <td>{{ data.experience}}</td>
+                <td>
+                    <button ng-click="edit(data.id)">Edit</button>
+                    <button ng-click="delete(data.id)">Delete</button>
+                </td>
+            </tr>
+        </tr>
+
+    </table>
+
+</div>
+</body>
+<script>
+var app = angular.module("myApp", []);
+
+app.controller("myCtrl", function($scope, $http) {
+    // model data for forms and table starts here
+    $scope.master ={
+        name:"",
+        email:"",
+        phone:"",
+        stream:"",
+        gender:"",
+        about:"",
+        year:"",
+        experience:"",
+        user_id:"",
+    };
+
+//resets and generates the user scope data from master data
+$scope.reset = function(){
+    $scope.user = angular.copy($scope.master);
+};
+
+//call reset function to make sure form reset function is empty when windows load
+$scope.reset();
+//message data to hold and display success or failure of our api request
+$scope.message ="";
+
+//save function
+$scope.save= function(){
+    $http.post("https://click-on-kaduna.herokuapp.com/api/student", $scope.user)
+    .then(function(response){
+        $scope.message = response.data.message;
+        $scope.getStudents();
+        $scope.reset();
+    });
+};
+//get students function
+
+    $scope.getStudents = function(){
+        $http.get("https://click-on-kaduna.herokuapp.com/api/student")
+        .then(function(response){
+            $scope.res = response.data;
+        });
+    };
+
+    //call getsStudents to make sure all registered students are updated on the table on load time
+    $scope.getStudents();
+
+    //delete function
+        $scope.delete = function($id){
+            $http.delete("https://click-on-kaduna.herokuapp.com/api/student"+ $id)
+            .then(function(response){
+                $scope.message = response.data.message;
+                $scope.getStudents();
+                $scope.reset();
+            });
+        };
+
+    //edit function
+    $scope.edit = function($id){
+        $http.get("https://click-on-kaduna.herokuapp.com/api/student/"+ $id)
+        .then(function(response){
+            $res = response.data
+            $data = $res.data
+
+            $scope.user.name = $data.name
+            $scope.user.email = $data.email
+            $scope.user.phone = $data.phone
+            $scope.user.stream = $data.stream
+            $scope.user.gender = $data.gender
+            $scope.user.about = $data.about
+            $scope.user.experience = $data.experience
+            $scope.user.user_id = $data.user_id
+
+            $scope.getStudents();
+            $scope.reset();
+        });
+    };
+    //update function
+    $scope.update = function(){
+        $http.patch("https://click-on-kaduna.herokuapp.com/api/student/"+ $scope.user.user_id, $scope.user)
+        .then(function(response){
+            $scope.message = response.data.message;
+            $scope.getStudents();
+            $scope.reset();
+        });
+    };
+
+});
+    </script>
+</html>

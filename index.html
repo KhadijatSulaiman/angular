@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<script src="./angular.min.js"></script>
+<body>
+    <h1>Angular Test App NG-App</h1>
+    
+    <div>
+        <hr>
+        <div>
+            <p>Enter character and see result: <input type="text" ng-model="character"></p>
+            <p>Result: {{character}}</p>
+        </div>
+    
+        <hr>
+        <div>
+            <p>First Number: <input type="text" ng-model="first_number"></p>
+            <p>Second Number: <input type="text" ng-model="second_number"></p>
+            <p>My first expression: {{ (first_number - 0) + (second_number - 0) }}</p>
+        </div>
+        <hr>
+        <div>
+                <p>Enter First Name: <input type="text" ng-model="fname"></p>
+                <p>Enter Last Name: <input type="text" ng-model="lname"></p>
+                <p>Full Name: {{ fullname }}</p>
+            </div>
+        
+    </div>
+</body>
+</html>

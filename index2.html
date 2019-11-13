@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+
+<body  ng-app="myApp" ng-controller="myCtrl">
+    <div>
+    <h1>Angular Test App NG-App</h1>
+    <hr>
+        <div>
+            <p>Enter character and see result: <input type="text" ng-model="character"></p>
+            <p>Result: {{character}}</p>
+        </div>
+    <hr>
+    <div>
+        <p>First Number: <input type="text" ng-model="first_number"></p>
+        <p>Second Number: <input type="text" ng-model="second_number"></p>
+        <p>My first expression: {{ (first_number - 0) + (second_number - 0) }}</p>
+    </div>
+    <hr>
+    <div>
+        <p>Enter First Name: <input type="text" ng-model="fname"></p>
+        <p>Enter Last Name: <input type="text" ng-model="lname"></p>
+        <p>Full Name: {{ fullname }}</p>
+        <button ng-click="addNames()">Add Names</button>
+    </div>
+    <hr>
+    <form novalidate>
+        <p>{{ message}} </p><br>
+
+    Full NAME:<br>
+    <input type="text" ng-mode="use.name" required><br>
+    Email<br>
+    <input type="text" ng-mode="use.email" required><br>
+    Phone:<br>
+    <input type="text" ng-mode="use.phone" required><br>
+    Stream:<br>
+    <input type="text" ng-mode="use.stream" required><br>
+    Gender:<br>
+    <input type="text" ng-mode="use.gender" required><br>
+    About You:<br>
+    <input type="text" ng-mode="use.about" required><br>
+    You Experience:<br>
+    <input type="text" ng-mode="use.experience" required><br>
+    <br><br>
+    <input type="hidden" ng-mode="use.user_id">
+    <button ng-click="save()">Submit</button>
+    <button ng-click="save()">Update</button>
+    <button ng-click="save()">Reset</button>
+
+</Form>
+<hr>
+
+<table style="width: 100%">
+    <button ng-click="getStudent()">Refresh</button>
+    <tr>
+        <th>Full Name</th>
+        <th>Stream</th>
+        <th>Gender</th>
+        <th>About</th>
+        <th>Experience</th>
+        <th>Action</th>
+        <tr ng-repeat="data in res.data">
+            <td>{{ data.name}}</td>
+            <td>{{ data.stream}}</td>
+            <td>{{ data.gender}}</td>
+            <td>{{ data.about}}</td>
+            <td>{{ data.experience}}</td>
+            <td>
+                <button ng-click="edit(data.id)">Edit</button>
+                <button ng-click="delete(data.id)">Delete</button>
+            </td>
+        </tr>
+    </tr>
+
+</table>
+
+</div>
+
+
+</body>
+<script>
+var app = angular.module("myApp", []);
+
+    app.controller("myCtrl", function($scope, $http) {
+
+        $scope.lname= '';
+        $scope.fname= '';
+
+        $scope.addnames = function() {
+            return $scope.fullName = $scope.fname + " " + $scope.lname;
+        };
+    }
+    );
+
+
+//get students function
+
+    $scope.getStudents = function(){
+        $http.get("https://click-on-kaduna.herrokuapp.com/api/student")
+        .then(function(response){
+            $scope.res=response.data;
+        });
+    });
+
+    //call getsStudents to make sure all registered students are updated on the table on load time
+    $get
+
+
+</script>
+</html>
